@@ -1,7 +1,8 @@
 #pragma once
 #include "basicIO.h"
+#include "simulator.h"
 
-class TwoGSimulator {
+class TwoGSimulator : public Simulator {
 public:
     static const int USERS_PER_200KHZ = 16;
     static const int BAND_KHZ = 200;
@@ -11,10 +12,12 @@ public:
     TwoGSimulator();
 
     // compute number of 200 kHz channels available in `total_khz`
-    int channelsFor(int total_khz) const;
+
+    int channelsFor(int total_khz) const override;
 
     // compute maximum users supported given total_khz
-    int maxUsersFor(int total_khz) const;
+    // antennas parameter is ignored for 2G (kept for polymorphic API)
+    int maxUsersFor(int total_khz, int antennas = 1) const override;
 
     // assign device ids (array) to channels; returns number assigned to first channel
     int listFirstChannel(int* deviceIds, int deviceCount, int total_khz, int* outFirst, int maxOut);

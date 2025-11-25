@@ -1,7 +1,9 @@
 #ifndef Q5G_H
 #define Q5G_H
 
-class FiveGSimulator {
+#include "q4g.h"
+
+class FiveGSimulator : public FourGSimulator {
 public:
     // main band uses 10 kHz subchannels (same as 4G base)
     static const int MAIN_SUB_BAND_KHZ = 10; // 10 kHz

@@ -12,14 +12,14 @@ sim: main.cpp basicIO.cpp $(ASM)
 sim2g: q2g_main.cpp q2g.cpp basicIO.cpp $(ASM)
 	$(CC) $(CFLAGS) q2g_main.cpp q2g.cpp basicIO.cpp $(ASM) -o sim2g
 
-sim3g: q3g_main.cpp q3g.cpp basicIO.cpp $(ASM)
-	$(CC) $(CFLAGS) q3g_main.cpp q3g.cpp basicIO.cpp $(ASM) -o sim3g
+sim3g: q3g_main.cpp q3g.cpp q2g.cpp basicIO.cpp $(ASM)
+	$(CC) $(CFLAGS) q3g_main.cpp q3g.cpp q2g.cpp basicIO.cpp $(ASM) -o sim3g
 
-sim4g: q4g_main.cpp q4g.cpp basicIO.cpp $(ASM)
-	$(CC) $(CFLAGS) q4g_main.cpp q4g.cpp basicIO.cpp $(ASM) -o sim4g
+sim4g: q4g_main.cpp q4g.cpp q3g.cpp q2g.cpp basicIO.cpp $(ASM)
+	$(CC) $(CFLAGS) q4g_main.cpp q4g.cpp q3g.cpp q2g.cpp basicIO.cpp $(ASM) -o sim4g
 
-sim5g: q5g_main.cpp q5g.cpp basicIO.cpp $(ASM)
-	$(CC) $(CFLAGS) q5g_main.cpp q5g.cpp basicIO.cpp $(ASM) -o sim5g
+sim5g: q5g_main.cpp q5g.cpp q4g.cpp q3g.cpp q2g.cpp basicIO.cpp $(ASM)
+	$(CC) $(CFLAGS) q5g_main.cpp q5g.cpp q4g.cpp q3g.cpp q2g.cpp basicIO.cpp $(ASM) -o sim5g
 
 run-sim:
 	@echo "[RUN] Question 1 (sim): usage: ./sim                     (interactive) or ./sim < test.txt"

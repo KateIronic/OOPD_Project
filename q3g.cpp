@@ -7,7 +7,8 @@ int ThreeGSimulator::channelsFor(int total_khz) const {
     return total_khz / BAND_KHZ;
 }
 
-int ThreeGSimulator::maxUsersFor(int total_khz) const {
+int ThreeGSimulator::maxUsersFor(int total_khz, int antennas) const {
+    (void)antennas; // 3G doesn't use MIMO antennas in this model
     int ch = channelsFor(total_khz);
     return ch * USERS_PER_200KHZ;
 }

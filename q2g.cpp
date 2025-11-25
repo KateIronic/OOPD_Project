@@ -8,7 +8,8 @@ int TwoGSimulator::channelsFor(int total_khz) const {
     return total_khz / BAND_KHZ;
 }
 
-int TwoGSimulator::maxUsersFor(int total_khz) const {
+int TwoGSimulator::maxUsersFor(int total_khz, int antennas) const {
+    (void)antennas; // 2G does not use MIMO antennas; parameter kept for polymorphic API
     int ch = channelsFor(total_khz);
     return ch * USERS_PER_200KHZ;
 }

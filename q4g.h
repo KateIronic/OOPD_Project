@@ -1,7 +1,9 @@
 #ifndef Q4G_H
 #define Q4G_H
 
-class FourGSimulator {
+#include "q3g.h"
+
+class FourGSimulator : public ThreeGSimulator {
 public:
     static const int SUB_BAND_KHZ = 10; // 10 kHz subchannels
     static const int USERS_PER_10KHZ = 30; // 30 users per 10 kHz
