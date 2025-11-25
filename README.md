@@ -74,6 +74,9 @@ How simulators behave (high-level)
 - Q4 (4G): OFDM with 10 kHz subchannels and MIMO (up to 4 antennas). The runner prints step-by-step calculations for per-subchannel effective capacity and assignment.
 - Q5 (5G): Main band (10 kHz subchannels) plus an 1800 MHz 10 MHz high band (30 users per 1 MHz), massive MIMO (up to 16). The runner explains how main and high-band capacities are combined and computes cores needed for total messages.
 
+Note about Q5 main-band capacity:
+- The 5G implementation uses a default capacity of **30 users per 10 kHz** on the main band, matching the Q4 assumption. This constant is defined in `q5g.h` as `USERS_PER_10KHZ_MAIN` and can be adjusted if your assignment specifies a different density.
+
 Notes about I/O and behavior
 ---------------------------
 - `basicIO` is a tiny custom I/O layer that uses a syscall wrapper. It reads tokens from stdin and writes prompts and results to stdout.

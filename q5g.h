@@ -5,7 +5,10 @@ class FiveGSimulator {
 public:
     // main band uses 10 kHz subchannels (same as 4G base)
     static const int MAIN_SUB_BAND_KHZ = 10; // 10 kHz
-    static const int USERS_PER_10KHZ_MAIN = 30; // assume 30 users per 10kHz for main band
+    // Capacity per 10 kHz subchannel on the main band.
+    // By default we use the same per-10kHz user capacity as Q4 (30 users per 10 kHz).
+    // If your assignment specifies a different density for 5G main band, change this value here.
+    static const int USERS_PER_10KHZ_MAIN = 30; // users per 10 kHz for main band (default: 30)
 
     // 1800 MHz band: 10 MHz (10000 kHz) with 30 users per 1 MHz
     static const int HIGH_BAND_KHZ = 10000; // 10 MHz
