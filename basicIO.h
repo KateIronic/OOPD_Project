@@ -19,5 +19,7 @@ public:
 
 extern basicIO io; 
 
+#define IO_EOF (-2147483647 - 1)
+
 
 #endif

@@ -35,42 +35,58 @@ static int readNextChar() {
 }
 
 int basicIO::inputint() {
-    char ch = 0;
-    long bytes = 0;
-    // skip non-digit/non-sign characters
-    bool neg = false;
-    bool started = false;
-    int result = 0;
+    // Read next token (sequence of non-whitespace chars) and parse as integer.
     while (true) {
+        // skip leading whitespace
         int c = readNextChar();
-        if (c < 0) {
-            if (!started) return 0;
-            break;
+        if (c < 0) return IO_EOF;
+        while (c >= 0 && (c == ' ' || c == '\t' || c == '\r' || c == '\n')) {
+            c = readNextChar();
+            if (c < 0) return IO_EOF;
         }
-        ch = (char)c;
-        if (!started) {
-            if (ch == '-') {
-                neg = true;
-                started = true;
-                continue;
-            }
-            if (ch >= '0' && ch <= '9') {
-                started = true;
-                result = ch - '0';
-                continue;
-            }
-            // skip other leading chars (spaces, newlines)
-            continue;
-        } else {
-            if (ch >= '0' && ch <= '9') {
-                result = result * 10 + (ch - '0');
-                continue;
-            }
-            // stop at first non-digit after starting
-            break;
+
+        // collect token
+        char token[64];
+        int tpos = 0;
+        bool hasDigit = false;
+        while (c >= 0 && c != ' ' && c != '\t' && c != '\r' && c != '\n') {
+            if (tpos < (int)sizeof(token) - 1) token[tpos++] = (char)c;
+            if (c >= '0' && c <= '9') hasDigit = true;
+            c = readNextChar();
+            if (c < 0) break;
         }
+        token[tpos] = '\0';
+
+        if (!hasDigit) {
+            // invalid token for integer; notify user and continue to next token
+            const char* msg = "Invalid integer input; please enter a number\n";
+            long len = 0; while (msg[len]) ++len;
+            syscall3(SYS_WRITE, 2, (long)msg, len);
+            if (c < 0) return IO_EOF;
+            continue; // read next token
+        }
+
+        // parse integer from token (handle optional leading sign)
+        int idx = 0;
+        bool neg = false;
+        if (token[idx] == '+' || token[idx] == '-') {
+            if (token[idx] == '-') neg = true;
+            ++idx;
+        }
+        long result = 0;
+        while (token[idx]) {
+            char ch2 = token[idx];
+            if (ch2 >= '0' && ch2 <= '9') {
+                result = result * 10 + (ch2 - '0');
+            } else {
+                // stop parsing at first non-digit inside token
+                break;
+            }
+            ++idx;
+        }
+        if (neg) result = -result;
+        return (int)result;
     }
-    return neg ? -result : result;
 }
 
 const char* basicIO::inputstring() {

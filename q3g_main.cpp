@@ -1,22 +1,21 @@
 #include "basicIO.h"
-#include "q2g.h"
+#include "q3g.h"
 
 extern basicIO io;
 
 int main() {
     try {
         io.activateInput();
-        TwoGSimulator sim;
+        ThreeGSimulator sim;
 
-        io.outputstring("2G Communication - Capacity Calculator\n");
-
+        io.outputstring("3G Communication - Capacity Calculator\n");
         io.outputstring("Assuming default allocation 1 MHz (1000 kHz).\n");
         int total_khz = 1000;
         int channels = sim.channelsFor(total_khz);
         int maxUsers = sim.maxUsersFor(total_khz);
 
         io.outputstring("Channels of 200 kHz available: "); io.outputint(channels); io.terminate();
-        io.outputstring("Maximum users supported (" ); io.outputint(TwoGSimulator::USERS_PER_200KHZ); io.outputstring(" per 200kHz): "); io.outputint(maxUsers); io.terminate();
+        io.outputstring("Maximum users supported (" ); io.outputint(ThreeGSimulator::USERS_PER_200KHZ); io.outputstring(" per 200kHz): "); io.outputint(maxUsers); io.terminate();
 
         io.errorstring("\nNow you may simulate assignment: enter number of devices present (<= max users): ");
         int n = io.inputint();
@@ -27,7 +26,6 @@ int main() {
             n = maxUsers;
         }
 
-        // allocate devices array
         int* devices = new int[n];
         for (int i = 0; i < n; ++i) {
             io.errorstring("Enter device id for device "); io.errorint(i+1); io.errorstring(": ");
@@ -39,15 +37,15 @@ int main() {
         // Show per-device assignment to channels (sequential filling)
         io.outputstring("\nPer-device channel assignment:\n");
         for (int i = 0; i < n; ++i) {
-            int channelIndex = (i / TwoGSimulator::USERS_PER_200KHZ) + 1; // 1-based
+            int channelIndex = (i / ThreeGSimulator::USERS_PER_200KHZ) + 1; // 1-based
             io.outputstring(" Device "); io.outputint(i+1); io.outputstring(": ID="); io.outputint(devices[i]); io.outputstring(", channel="); io.outputint(channelIndex); io.terminate();
         }
 
-        // list occupants of first channel
-        int* first = new int[TwoGSimulator::USERS_PER_200KHZ];
-        int countFirst = sim.listFirstChannel(devices, n, total_khz, first, TwoGSimulator::USERS_PER_200KHZ);
+        int* first = new int[ThreeGSimulator::USERS_PER_200KHZ];
+        int countFirst = sim.listFirstChannel(devices, n, total_khz, first, ThreeGSimulator::USERS_PER_200KHZ);
+
         io.outputstring("\nUsers occupying the first 200 kHz channel (first channel): ");
-        int shown = (countFirst < TwoGSimulator::USERS_PER_200KHZ) ? countFirst : TwoGSimulator::USERS_PER_200KHZ;
+        int shown = (countFirst < ThreeGSimulator::USERS_PER_200KHZ) ? countFirst : ThreeGSimulator::USERS_PER_200KHZ;
         if (shown == 0) {
             io.outputstring("(none)\n");
         } else {
@@ -56,6 +54,9 @@ int main() {
             }
             io.terminate();
         }
+
+        // Also print per-device message requirement for clarity
+        io.outputstring("\nEach device generates "); io.outputint(ThreeGSimulator::MESSAGES_PER_DEVICE); io.outputstring(" messages (packet-switched).\n");
 
         delete [] devices;
         delete [] first;
