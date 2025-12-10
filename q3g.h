@@ -3,23 +3,28 @@
 
 #include "q2g.h"
 
+// --------------------------------------------------------
+// 3G Simulator — Inherits from 2G but increases capacity
+// --------------------------------------------------------
 class ThreeGSimulator : public TwoGSimulator {
 public:
-    static const int BAND_KHZ = 200; // channel size
-    static const int USERS_PER_200KHZ = 32; // 32 users per 200 kHz channel
-    static const int MESSAGES_PER_DEVICE = 10; // each device generates 10 messages
+    static const int USERS_PER_3G_CHANNEL = 32;   // 32 users per 200 kHz
+    static const int MSG_PER_DEVICE_3G   = 10;    // packet-switched fixed
 
     ThreeGSimulator();
 
-    int channelsFor(int total_khz) const;
-    // antennas parameter retained for polymorphic API; ignored for 3G
-    int maxUsersFor(int total_khz, int antennas = 1) const;
+    // override channel capacity
+    int maxUsersFor(int total_khz, int antennas = 1) const override;
 
-    // deviceIds: array of device ids assigned sequentially; deviceCount: how many devices present
-    // total_khz: total allocation (e.g., 1000 for 1 MHz)
-    // outFirst: buffer to receive ids on first channel (maxOut is buffer size)
-    // returns number of IDs written into outFirst
-    int listFirstChannel(int* deviceIds, int deviceCount, int total_khz, int* outFirst, int maxOut) const;
+    // return messages per device
+    int messagesPerDevice(int deviceType) const override;
+
+    // list IDs in first channel
+    int listFirstChannel(int* deviceIds,
+                         int deviceCount,
+                         int total_khz,
+                         int* outFirst,
+                         int maxOut) const;
 };
 
-#endif // Q3G_H
+#endif

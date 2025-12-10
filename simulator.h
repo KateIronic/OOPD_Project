@@ -1,16 +1,31 @@
 #pragma once
+#ifndef SIMULATOR_H
+#define SIMULATOR_H
 
-// Abstract base class for all generation simulators
+// Device type constants: used across all generations (2G–5G)
+#define DEVICE_VOICE 1
+#define DEVICE_DATA  2
+#define DEVICE_BOTH  3
+
+// ------------------------------------------------------------------
+// Abstract Simulator: defines the API that every generation must follow
+// ------------------------------------------------------------------
 class Simulator {
 public:
     virtual ~Simulator() {}
 
-    // number of channels/subchannels depending on generation
+    // Number of channels for this generation given total kHz bandwidth
     virtual int channelsFor(int total_khz) const = 0;
 
-    // maximum users supported given total_khz and antennas (antennas default 1)
+    // Maximum users supported given total bandwidth and antenna count
+    // (2G ignores antennas, 3G+ use antennas)
     virtual int maxUsersFor(int total_khz, int antennas = 1) const = 0;
 
-    // optional messages per device (override if meaningful)
-    virtual int messagesPerDevice() const { return 0; }
+    // Messages generated per device depending on device type
+    virtual int messagesPerDevice(int deviceType) const = 0;
+
+    // Return name of generation ("2G", "3G", "4G", "5G")
+    virtual const char* name() const = 0;
 };
+
+#endif
