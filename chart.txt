@@ -16,7 +16,7 @@
    2G logic only      adds 3G-specific     adds 4G-specific     adds 5G-specific
  (16 users/200 kHz)     capacity rules     OFDMA (10 kHz)       main + high band
        no MIMO          (32 per 200kHz)     antennas=8          antennas=16
-                                                   |
+       Only TDM            WCDMA               OFDMA            OFDMA + Massive MIMO
                                                inherits from 3G
                                                    |
                                                5G inherits 4G
